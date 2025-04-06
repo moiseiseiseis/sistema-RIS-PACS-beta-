@@ -2,64 +2,108 @@
 {% block title %}Registro de Paciente{% endblock %}
 
 {% block content %}
-<div class="card">
-    <div class="card-header">
-        <h4 class="card-title">Registro de Nuevo Paciente</h4>
+<div class="card border-primary">
+    <div class="card-header bg-primary text-white">
+        <h4 class="card-title mb-0">
+            <i class="bi bi-person-plus"></i> Registro de Nuevo Paciente
+        </h4>
     </div>
     <div class="card-body">
-        <form method="POST">
+        <form method="POST" novalidate>
             {{ form.hidden_tag() }}
             
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    {{ form.nombre.label(class="form-label") }}
-                    {{ form.nombre(class="form-control") }}
+            <!-- Sección 1: Información Básica -->
+            <div class="row mb-4">
+                <div class="col-md-6 mb-3">
+                    {{ form.nombre.label(class="form-label fw-bold") }}
+                    {{ form.nombre(class="form-control" + (" is-invalid" if form.nombre.errors else "")) }}
                     {% for error in form.nombre.errors %}
-                        <div class="invalid-feedback d-block">{{ error }}</div>
+                        <div class="invalid-feedback">{{ error }}</div>
                     {% endfor %}
+                    <small class="form-text text-muted">Nombre completo del paciente</small>
                 </div>
-                <div class="col-md-6">
-                    {{ form.identificacion.label(class="form-label") }}
-                    {{ form.identificacion(class="form-control") }}
+                
+                <div class="col-md-6 mb-3">
+                    {{ form.identificacion.label(class="form-label fw-bold") }}
+                    {{ form.identificacion(class="form-control" + (" is-invalid" if form.identificacion.errors else "")) }}
                     {% for error in form.identificacion.errors %}
-                        <div class="invalid-feedback d-block">{{ error }}</div>
+                        <div class="invalid-feedback">{{ error }}</div>
                     {% endfor %}
                 </div>
             </div>
 
-            <div class="row mb-3">
-                <div class="col-md-4">
-                    {{ form.fecha_nacimiento.label(class="form-label") }}
-                    {{ form.fecha_nacimiento(class="form-control") }}
+            <!-- Sección 2: Datos Personales -->
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3">
+                    {{ form.fecha_nacimiento.label(class="form-label fw-bold") }}
+                    {{ form.fecha_nacimiento(class="form-control" + (" is-invalid" if form.fecha_nacimiento.errors else "")) }}
                     {% for error in form.fecha_nacimiento.errors %}
-                        <div class="invalid-feedback d-block">{{ error }}</div>
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                    <small class="form-text text-muted">Formato: AAAA-MM-DD</small>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    {{ form.genero.label(class="form-label fw-bold") }}
+                    {{ form.genero(class="form-select" + (" is-invalid" if form.genero.errors else "")) }}
+                    {% for error in form.genero.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
                     {% endfor %}
                 </div>
-                <div class="col-md-4">
-                    {{ form.genero.label(class="form-label") }}
-                    {{ form.genero(class="form-select") }}
-                </div>
-                <div class="col-md-4">
-                    {{ form.telefono.label(class="form-label") }}
-                    {{ form.telefono(class="form-control") }}
+                
+                <div class="col-md-4 mb-3">
+                    {{ form.telefono.label(class="form-label fw-bold") }}
+                    {{ form.telefono(class="form-control" + (" is-invalid" if form.telefono.errors else "")) }}
+                    {% for error in form.telefono.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                    <small class="form-text text-muted">Ej: +34 600 123 456</small>
                 </div>
             </div>
 
-            <div class="mb-3">
-                {{ form.email.label(class="form-label") }}
-                {{ form.email(class="form-control") }}
-                {% for error in form.email.errors %}
-                    <div class="invalid-feedback d-block">{{ error }}</div>
+            <!-- Sección 3: Credenciales -->
+            <div class="row mb-4">
+                <div class="col-md-6 mb-3">
+                    {{ form.email.label(class="form-label fw-bold") }}
+                    {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else "")) }}
+                    {% for error in form.email.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    {{ form.password.label(class="form-label fw-bold") }}
+                    {{ form.password(class="form-control" + (" is-invalid" if form.password.errors else "")) }}
+                    {% for error in form.password.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                    <small class="form-text text-muted">Mínimo 8 caracteres</small>
+                </div>
+                
+                <div class="col-md-6 offset-md-6 mb-3">
+                    {{ form.confirm_password.label(class="form-label fw-bold") }}
+                    {{ form.confirm_password(class="form-control" + (" is-invalid" if form.confirm_password.errors else "")) }}
+                    {% for error in form.confirm_password.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Sección 4: Historial Médico -->
+            <div class="mb-4">
+                {{ form.historial_medico.label(class="form-label fw-bold") }}
+                {{ form.historial_medico(class="form-control" + (" is-invalid" if form.historial_medico.errors else "")) }}
+                {% for error in form.historial_medico.errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
                 {% endfor %}
+                <small class="form-text text-muted">Antecedentes médicos relevantes (máximo 2000 caracteres)</small>
             </div>
 
-            <div class="mb-3">
-                {{ form.historial.label(class="form-label") }}
-                {{ form.historial(class="form-control", rows=4) }}
-            </div>
-
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <a href="{{ url_for('main.listar_pacientes') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+            <!-- Botones -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end border-top pt-3">
+                <a href="{{ url_for('pacientes.listar') }}" class="btn btn-outline-secondary me-md-2">
+                    <i class="bi bi-arrow-left"></i> Cancelar
+                </a>
                 {{ form.submit(class="btn btn-primary") }}
             </div>
         </form>

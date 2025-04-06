@@ -3,69 +3,77 @@
 
 {% block content %}
 <div class="card">
-    <div class="card-header">
+    <div class="card-header bg-primary text-white">
         <h4 class="card-title">Editar Paciente: {{ paciente.nombre }}</h4>
     </div>
     <div class="card-body">
-        <form method="POST">
+        <form method="POST" novalidate>
             {{ form.hidden_tag() }}
             
             <div class="row mb-3">
                 <div class="col-md-6">
                     {{ form.nombre.label(class="form-label") }}
-                    {{ form.nombre(class="form-control") }}
+                    {{ form.nombre(class="form-control" + (" is-invalid" if form.nombre.errors else "")) }}
                     {% for error in form.nombre.errors %}
-                        <div class="invalid-feedback d-block">{{ error }}</div>
+                        <div class="invalid-feedback">{{ error }}</div>
                     {% endfor %}
                 </div>
                 <div class="col-md-6">
                     {{ form.identificacion.label(class="form-label") }}
-                    {{ form.identificacion(class="form-control") }}
-                    {% for error in form.identificacion.errors %}
-                        <div class="invalid-feedback d-block">{{ error }}</div>
-                    {% endfor %}
+                    {{ form.identificacion(class="form-control", readonly=True) }}
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-4">
                     {{ form.fecha_nacimiento.label(class="form-label") }}
-                    {{ form.fecha_nacimiento(class="form-control") }}
+                    {{ form.fecha_nacimiento(class="form-control" + (" is-invalid" if form.fecha_nacimiento.errors else "")) }}
                     {% for error in form.fecha_nacimiento.errors %}
-                        <div class="invalid-feedback d-block">{{ error }}</div>
+                        <div class="invalid-feedback">{{ error }}</div>
                     {% endfor %}
                 </div>
                 <div class="col-md-4">
                     {{ form.genero.label(class="form-label") }}
-                    {{ form.genero(class="form-select") }}
+                    {{ form.genero(class="form-select" + (" is-invalid" if form.genero.errors else "")) }}
+                    {% for error in form.genero.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
                 </div>
                 <div class="col-md-4">
                     {{ form.telefono.label(class="form-label") }}
-                    {{ form.telefono(class="form-control") }}
+                    {{ form.telefono(class="form-control" + (" is-invalid" if form.telefono.errors else "")) }}
+                    {% for error in form.telefono.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
                 </div>
             </div>
 
             <div class="mb-3">
                 {{ form.email.label(class="form-label") }}
-                {{ form.email(class="form-control") }}
-                {% for error in form.email.errors %}
-                    <div class="invalid-feedback d-block">{{ error }}</div>
-                {% endfor %}
+                {{ form.email(class="form-control", readonly=True) }}
             </div>
 
             <div class="mb-3">
-                {{ form.historial.label(class="form-label") }}
-                {{ form.historial(class="form-control", rows=4) }}
+                {{ form.historial_medico.label(class="form-label") }}
+                {{ form.historial_medico(class="form-control" + (" is-invalid" if form.historial_medico.errors else ""), rows=4) }}
+                {% for error in form.historial_medico.errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
             </div>
 
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <a href="{{ url_for('main.listar_pacientes') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end border-top pt-3">
+                <a href="{{ url_for('pacientes.listar') }}" class="btn btn-outline-secondary me-md-2">
+                    <i class="bi bi-arrow-left"></i> Cancelar
+                </a>
                 {{ form.submit(class="btn btn-primary") }}
-                <a href="{{ url_for('main.eliminar_paciente', id=paciente.id) }}" 
-                   class="btn btn-danger" 
-                   onclick="return confirm('¿Estás seguro de eliminar este paciente?')">Eliminar</a>
+                <a href="{{ url_for('pacientes.eliminar_paciente', id=paciente.id) }}" 
+                class="btn btn-danger" 
+                onclick="return confirm('¿Estás seguro de eliminar este paciente? Esta acción no se puede deshacer.')">
+                <i class="bi bi-trash"></i> Eliminar
+             </a>
             </div>
         </form>
     </div>
 </div>
 {% endblock %}
+
